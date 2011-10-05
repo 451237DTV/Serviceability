@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<xsd:schema attributeFormDefault="unqualified"
+            elementFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:ZillowTypes="http://www.zillow.com/static/xsd/ZillowTypes.xsd"
+            targetNamespace="http://www.zillow.com/static/xsd/ZillowTypes.xsd" xmlns:Q1="xs">
+
+    <xsd:simpleType name="Currency">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="USD"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+	<xsd:simpleType name="ChartDuration">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="1year"/>
+            <xsd:enumeration value="5years"/>
+            <xsd:enumeration value="10years"/>
+            <xsd:enumeration value="lastSale"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="SimpleChartDuration">
+        <xsd:restriction base="ZillowTypes:ChartDuration">
+            <xsd:enumeration value="1year"/>
+            <xsd:enumeration value="5years"/>
+            <xsd:enumeration value="10years"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="ChartVariant">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="homedetails"/>
+            <xsd:enumeration value="showcase"/>
+            <xsd:enumeration value="detailed"/>
+            <xsd:enumeration value="seo"/>
+            <xsd:enumeration value="partner"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="LoanType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="thirtyYearFixed"/>
+            <xsd:enumeration value="fifteenYearFixed"/>
+            <xsd:enumeration value="fiveOneARM"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="HomeType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="singleFamily"/>
+            <xsd:enumeration value="condo"/>
+            <xsd:enumeration value="multiFamily"/>
+            <xsd:enumeration value="manufactured"/>
+            <xsd:enumeration value="lot"/>
+            <xsd:enumeration value="unknown"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="HomeStatus">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="forSale"/>
+            <xsd:enumeration value="makeMeMove"/>
+            <xsd:enumeration value="recentlySold"/>
+            <xsd:enumeration value="other"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="DaysOn">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="1"/>
+            <xsd:enumeration value="7"/>
+            <xsd:enumeration value="14"/>
+            <xsd:enumeration value="30"/>
+            <xsd:enumeration value="over90"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="RankTypes">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="priceHighToLow"/>
+            <xsd:enumeration value="priceLowToHigh"/>
+            <xsd:enumeration value="featured"/>
+            <xsd:enumeration value="dateSold"/>
+            <xsd:enumeration value="daysOnZillow"/>
+            <xsd:enumeration value="bedrooms"/>
+            <xsd:enumeration value="bathrooms"/>
+            <xsd:enumeration value="livingArea"/>
+            <xsd:enumeration value="yearBuilt"/>
+            <xsd:enumeration value="lotArea"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:complexType name="Amount">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:integer">
+                <xsd:attribute name="currency" type="ZillowTypes:Currency" use="required"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="Address">
+        <xsd:sequence>
+            <xsd:element name="street" type="xsd:string"/>
+            <xsd:element name="zipcode" type="xsd:string"/>
+            <xsd:element name="city" type="xsd:string"/>
+            <xsd:element name="state" type="xsd:string"/>
+            <xsd:element name="latitude" type="xsd:decimal"/>
+            <xsd:element name="longitude" type="xsd:decimal"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RestrictedAddress">
+        <!-- optional geocode information -->
+        <xsd:sequence>
+            <xsd:element name="street" type="xsd:string"/>
+            <xsd:element name="zipcode" type="xsd:string"/>
+            <xsd:element name="city" type="xsd:string"/>
+            <xsd:element name="state" type="xsd:string"/>
+            <xsd:element name="latitude" type="xsd:decimal" minOccurs="0"/>
+            <xsd:element name="longitude" type="xsd:decimal" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+	
+    <xsd:complexType name="Message">
+        <xsd:sequence>
+            <xsd:element name="text" type="xsd:string"/>
+            <xsd:element name="code" type="xsd:integer"/>
+            <xsd:element name="limit-warning" type="xsd:boolean" fixed="true" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="Regions">
+        <xsd:sequence>
+            <xsd:element name="zipcode-id" type="xsd:integer"/>
+            <xsd:element name="city-id" type="xsd:integer"/>
+            <xsd:element name="county-id" type="xsd:integer"/>
+            <xsd:element name="state-id" type="xsd:integer"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+	<xsd:complexType name="RegionNames">
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:string"/>
+			<xsd:element name="country" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="state" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="county" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="city" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="cityurl" type="xsd:string" minOccurs="0" />
+			<xsd:element name="zipcode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="neighborhood" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="neighborhoodurl" type="xsd:string" minOccurs="0" />
+			<xsd:element name="latitude" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="longitude" type="xsd:decimal" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+    <xsd:complexType name="Zestimate">
+        <xsd:sequence>
+            <xsd:element name="amount" type="ZillowTypes:Amount"/>
+            <xsd:element minOccurs="0" name="last-updated" type="xsd:string"/>
+            <xsd:element name="oneWeekChange" type="ZillowTypes:AmountOptional"/>
+            <xsd:element name="valueChange" type="ZillowTypes:AmountOptional"/>	         
+            <xsd:element name="valuationRange">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="low" type="ZillowTypes:Amount"/>
+                        <xsd:element name="high" type="ZillowTypes:Amount"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="percentile" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="SimpleZestimate">
+        <xsd:sequence>
+            <xsd:element name="amount" type="ZillowTypes:Amount"/>
+            <xsd:element name="valuationRange">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="low" type="ZillowTypes:Amount"/>
+                        <xsd:element name="high" type="ZillowTypes:Amount"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="LocalRealEstate">
+        <xsd:sequence>
+        	<xsd:element name="region" minOccurs="1" maxOccurs="unbounded">
+        		<xsd:complexType>
+        			<xsd:sequence>
+        				<xsd:element name="zindexValue" type="xsd:string"/>
+        				<xsd:element name="zindexOneYearChange" type="xsd:string"/>
+        				<xsd:element name="links">
+        					<xsd:complexType>
+        						<xsd:sequence>
+        							<xsd:element name="overview" type="xsd:string"/>
+        							<xsd:element name="forSaleByOwner" type="xsd:string"/>
+        							<xsd:element name="forSale" type="xsd:string"/>
+        						</xsd:sequence>
+        					</xsd:complexType>
+        				</xsd:element>
+        			</xsd:sequence>
+        			<xsd:attribute name="name" type="xsd:string" use="required"/>
+        			<xsd:attribute name="type" type="xsd:string" use="required"/>
+        			<xsd:attribute name="id" type="xsd:unsignedInt" use="required"/>
+        		</xsd:complexType>
+        	</xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="Links">
+        <xsd:sequence>
+            <xsd:element name="homedetails"   type="xsd:string"/>
+            <xsd:element name="graphsanddata" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="mapthishome"  minOccurs="0" type="xsd:string"/>
+            <xsd:element name="myestimator"  minOccurs="0" type="xsd:string"/>
+  			<xsd:element name="myzestimator" minOccurs="0" type="ZillowTypes:DeprecatedType"/>  			 			
+            <xsd:element name="comparables"   type="xsd:string" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="Property">
+        <xsd:sequence>
+            <xsd:element name="zpid" type="xsd:unsignedInt"/>
+            <xsd:element name="links" type="ZillowTypes:Links" />
+            <xsd:element name="address" type="ZillowTypes:Address"/>
+            <xsd:element minOccurs="0" name="FIPScounty" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="useCode" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="taxAssessmentYear" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="taxAssessment" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="yearBuilt" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="lotSizeSqFt" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="finishedSqFt" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="bathrooms" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="bedrooms" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="totalRooms" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="lastSoldDate" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="lastSoldPrice" type="ZillowTypes:Amount"/>
+          </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="SimpleProperty">
+        <xsd:complexContent>
+            <xsd:extension base="ZillowTypes:Property">
+                <xsd:sequence>
+                    <xsd:element name="zestimate" type="ZillowTypes:Zestimate"/>
+                    <xsd:element name="localRealEstate" type="ZillowTypes:LocalRealEstate"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="TerseAddress">
+        <xsd:sequence>
+            <!-- st = street -->
+            <xsd:element name="st" type="xsd:string"/>
+            <!-- zc = zipcode -->
+            <xsd:element name="zc" type="xsd:string"/>
+            <!-- cy = city -->
+            <xsd:element name="cy" type="xsd:string"/>
+            <!-- et = state (etat) -->
+            <xsd:element name="et" type="xsd:string"/>
+            <!-- la = latitude -->
+            <xsd:element name="la" type="xsd:decimal"/>
+            <!-- lo = longitude -->
+            <xsd:element name="lo" type="xsd:decimal"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ReallySimpleProperty">
+        <xsd:sequence>
+            <!-- id = zpid (zillow property id)  -->
+            <xsd:element name="id" type="xsd:unsignedInt"/>
+            <!-- ad = address -->
+            <xsd:element name="ad" type="ZillowTypes:TerseAddress"/>
+            <!-- pr = price -->
+            <xsd:element name="pr" type="xsd:unsignedInt"/>
+            <!-- ba = bathrooms -->
+            <xsd:element name="ba" type="xsd:decimal"/>
+            <!-- be = bedrooms -->
+            <xsd:element name="be" type="xsd:unsignedInt"/>
+            <!-- sf = livingArea in square feet  -->
+            <xsd:element name="sf" type="xsd:unsignedInt"/>
+            <!-- ht = home type -->
+            <xsd:element name="ht" type="ZillowTypes:HomeType"/>
+            <!-- hs = home status -->
+            <xsd:element name="hs" type="ZillowTypes:HomeStatus"/>
+            <!-- il = imageLink -->
+            <xsd:element name="il" type="xsd:string"/>
+            <!-- fl = featuredListing -->
+            <xsd:element name="fl" type="xsd:boolean"/>
+            <!-- cp = contactPhone -->
+            <xsd:element name="cp" type="xsd:string"/>
+            <!-- ce = contactEmail -->
+            <xsd:element name="ce" type="xsd:string"/>
+            <!-- hi = highlight -->
+            <xsd:element name="hi" type="xsd:boolean"/>
+            <!-- pc = photoCount -->
+            <xsd:element name="pc" type="xsd:unsignedInt"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="FMRProperty">
+        <xsd:sequence>
+            <xsd:element name="address" type="ZillowTypes:RestrictedAddress"/>
+            <xsd:element name="detailPageLink" type="xsd:string"/>
+            <xsd:element name="price" type="xsd:unsignedInt"/>
+            <xsd:element minOccurs="0" name="lastSoldDate" type="xsd:string"/>
+            <xsd:element minOccurs="0" name="lastSoldPrice" type="xsd:unsignedInt"/>
+            <xsd:element minOccurs = "0" name="zestimate" type="ZillowTypes:SimpleZestimate"/>
+            <xsd:element name="bathrooms" type="xsd:decimal"/>
+            <xsd:element name="bedrooms" type="xsd:unsignedInt"/>
+            <xsd:element name="finishedSqFt" type="xsd:unsignedInt"/>
+            <xsd:element name="lotSqFt" type="xsd:unsignedInt"/>
+            <xsd:element name="homeType" type="ZillowTypes:HomeType"/>
+            <xsd:element name="homeStatus" type="ZillowTypes:HomeStatus"/>
+            <xsd:element name="imageLink" type="xsd:string"/>
+            <xsd:element name="largeImageLink" type="xsd:string"/>
+            <xsd:element minOccurs = "0" name="fsboLink" type="xsd:string"/>
+            <xsd:element minOccurs = "0" name="forSaleLink" type="xsd:string"/>
+            <xsd:element minOccurs = "0" name="makeMeMoveLink" type="xsd:string"/>
+            <xsd:element minOccurs = "0" name="recentlySoldLink" type="xsd:string"/>
+            <xsd:element minOccurs = "0" name="localPageLink" type="xsd:string"/>
+            <xsd:element minOccurs = "0" name="neighborhood" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ComparableProperty">
+        <xsd:complexContent>
+            <xsd:extension base="ZillowTypes:SimpleProperty">
+                <xsd:attribute name="score" type="xsd:decimal"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="DetailedProperty">
+        <xsd:complexContent>
+            <xsd:extension base="ZillowTypes:SimpleProperty">
+                <xsd:sequence>
+                    <xsd:element name="regions" type="ZillowTypes:Regions" />
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+	<xsd:complexType name="DeprecatedType">
+		<xsd:simpleContent>
+		  <xsd:extension base="xsd:string">
+		    <xsd:attribute name="deprecated" type="xsd:boolean" fixed="true" use="required" />
+		  </xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	    
+	<xsd:complexType name="AmountOptional">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="currency" type="ZillowTypes:Currency"/>
+                <xsd:attribute name="duration" type="xsd:integer"/>
+                <xsd:attribute name="deprecated" type="xsd:boolean" fixed="true"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="MortgageInterestRate">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:decimal">
+                <xsd:attribute name="loanType" type="ZillowTypes:LoanType"/>
+                <xsd:attribute name="count" type="xsd:integer"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="MortgageRateList">
+        <xsd:sequence>
+            <xsd:element name="rate" type="ZillowTypes:MortgageInterestRate" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="MortgageRateSummary">
+        <xsd:sequence>
+            <xsd:element name="today" type="ZillowTypes:MortgageRateList"/>
+            <xsd:element name="lastWeek" type="ZillowTypes:MortgageRateList"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="MonthlyPaymentData">
+        <xsd:sequence>
+            <xsd:element name="rate" type="ZillowTypes:MortgageInterestRate"/>
+            <xsd:element name="monthlyPrincipalAndInterest" type="xsd:integer"/>
+            <xsd:element name="monthlyMortgageInsurance" type="xsd:integer" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="loanType" type="ZillowTypes:LoanType"/>
+    </xsd:complexType>
+    
+    <xsd:complexType name="MonthlyPaymentsSummary">
+        <xsd:sequence>
+            <xsd:element name="payment" type="ZillowTypes:MonthlyPaymentData" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="downPayment" type="xsd:integer"/>
+            <xsd:element name="monthlyPropertyTaxes" type="xsd:integer" minOccurs="0"/>
+            <xsd:element name="monthlyHazardInsurance" type="xsd:integer" minOccurs="0"/>
+        </xsd:sequence>
+   </xsd:complexType>
+
+    <xsd:complexType name="LenderAccountStatus">
+        <xsd:sequence>
+            <xsd:element name="balance" type="xsd:decimal"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+</xsd:schema>
